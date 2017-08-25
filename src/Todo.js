@@ -14,7 +14,6 @@ class Todo extends Component {
       let td = JSON.parse(localStorage.getItem(keys[i]));
       todos.push(td);
     }
-    console.log(todos);
     this.state = {
       nextId: nextId?nextId:0,
       todos,

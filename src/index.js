@@ -6,3 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(<Todo />, document.getElementById('root'));
 registerServiceWorker();
+
+// if (module.hot) {
+//   module.hot.accept()
+// }
