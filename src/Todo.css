@@ -1,0 +1,53 @@
+.todoItems {
+  font-family: monospace;
+}
+
+.doneMarker {
+  cursor: pointer;
+}
+
+.doneMarker:hover {
+  box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+  border-radius: 6px;
+}
+
+.deleteMarker {
+  cursor: pointer;
+  color: white;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1.5em;
+}
+
+.deleteMarker:hover {
+  box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+}
+
+.todoItem {
+  display: flex;
+  align-self: center;
+  margin: 5px;
+  padding: 8px;
+  align-self: center;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 20px;
+}
+
+.todoText {
+  flex: 1;
+  text-align: left;
+}
+
+.todoInput input {
+  width: 400px;
+  margin-bottom: 20px;
+  border: solid 1px #AAA;
+  padding: 3px;
+  font-size: 1.1em;
+  border-radius: 3px;
+  box-shadow: 3px 3px 10px #555;
+}
