@@ -62,7 +62,7 @@ class Todo extends Component {
 
     return (
       <div>
-        <h1>Todo!</h1>
+        <h1 className="fancyHdr">Todo</h1>
         <TodoInput onAdd={this.handleAddTodo}/>
         <div className="todoItems">
           {todoItems}
