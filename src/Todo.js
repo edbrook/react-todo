@@ -7,62 +7,63 @@ import './Todo.css';
 class Todo extends Component {
   constructor(props) {
     super(props);
-    const nextId = parseInt(localStorage.getItem("todo__nextId"), 10);
-    const todos = [];
-    const keys = Object.keys(localStorage).filter(k => 
-      k.startsWith('todo__') && k !== "todo__nextId");
-    for (let key of keys) {
-      let td = JSON.parse(localStorage.getItem(key));
-      todos.push(td);
-    }
+    this.dataSource = props.dataSource;
     this.state = {
-      nextId: nextId?nextId:0,
-      todos,
+      todos: this._getTodoItems(),
     };
   }
 
+  componentDidMount() {
+    this.dataSource.registerListener(this);
+  }
+
+  componentWillUnmount() {
+    this.dataSource.unregisterListener(this);
+  }
+
+  onUpdate(dataSource) {
+    this.setState({
+      todos: this._getTodoItems(),
+    });
+  }
+
+  _getNextId() {
+    let nextId = this.dataSource.getItem("nextId");
+    return nextId ? nextId : 0;
+  }
+
+  _getTodoItems() {
+    return this.dataSource.getItems(k => k !== "nextId");
+  }
+
   handleChangeTodo = (todo) => {
-   const idx = this.state.todos.indexOf(todo);
-   const todos = this.state.todos.slice();
-   todos[idx].done = !todos[idx].done;
+   todo.done = !todo.done;
    this.storeItem(todo);
-   this.setState({ todos });
   }
 
   handleAddTodo = (todo) => {
     if (todo.note.length === 0) {
       return;
     }
-    todo.id = this.state.nextId;
+    todo.id = this._getNextId();
     this.storeItem(todo);
-    this.storeNextId(this.state.nextId + 1);
-    const todos = this.state.todos.concat(todo);
-    this.setState({
-      todos,
-      nextId: this.state.nextId + 1,
-    });
+    this.storeNextId(todo.id + 1);
   }
 
   handleDeleteTodo = (todo) => {
-    const todos = this.state.todos.slice();
-    const idx = todos.indexOf(todo);
-    this.removeItem(todo.id);
-    todos.splice(idx, 1);
-    this.setState({ todos });
+    this.removeItem(todo);
   }
 
   storeNextId = (nextId) => {
-    localStorage.setItem("todo__nextId", nextId);
+    this.dataSource.setItem("nextId", nextId);
   }
 
   storeItem = (item) => {
-    const key = "todo__" + item.id;
-    localStorage.setItem(key, JSON.stringify(item));
+    this.dataSource.setItem(item.id, item);
   }
 
   removeItem = (item) => {
-    const key = "todo__" + item.id;
-    localStorage.removeItem(key);
+    this.dataSource.removeItem(item.id);
   }
 
   render() {
