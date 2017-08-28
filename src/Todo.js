@@ -7,11 +7,12 @@ import './Todo.css';
 class Todo extends Component {
   constructor(props) {
     super(props);
-    const nextId = parseInt(localStorage.getItem("nextId"), 10);
+    const nextId = parseInt(localStorage.getItem("todo__nextId"), 10);
     const todos = [];
-    const keys = Object.keys(localStorage).filter(k => k !== "nextId");
-    for (let i in keys) {
-      let td = JSON.parse(localStorage.getItem(keys[i]));
+    const keys = Object.keys(localStorage).filter(k => 
+      k.startsWith('todo__') && k !== "todo__nextId");
+    for (let key of keys) {
+      let td = JSON.parse(localStorage.getItem(key));
       todos.push(td);
     }
     this.state = {
@@ -24,7 +25,7 @@ class Todo extends Component {
    const idx = this.state.todos.indexOf(todo);
    const todos = this.state.todos.slice();
    todos[idx].done = !todos[idx].done;
-   localStorage.setItem(todo.id, JSON.stringify(todo));
+   this.storeItem(todo);
    this.setState({ todos });
   }
 
@@ -33,8 +34,8 @@ class Todo extends Component {
       return;
     }
     todo.id = this.state.nextId;
-    localStorage.setItem(todo.id, JSON.stringify(todo));
-    localStorage.setItem("nextId", this.state.nextId + 1);
+    this.storeItem(todo);
+    this.storeNextId(this.state.nextId + 1);
     const todos = this.state.todos.concat(todo);
     this.setState({
       todos,
@@ -45,9 +46,23 @@ class Todo extends Component {
   handleDeleteTodo = (todo) => {
     const todos = this.state.todos.slice();
     const idx = todos.indexOf(todo);
-    localStorage.removeItem(todo.id);
+    this.removeItem(todo.id);
     todos.splice(idx, 1);
     this.setState({ todos });
+  }
+
+  storeNextId = (nextId) => {
+    localStorage.setItem("todo__nextId", nextId);
+  }
+
+  storeItem = (item) => {
+    const key = "todo__" + item.id;
+    localStorage.setItem(key, JSON.stringify(item));
+  }
+
+  removeItem = (item) => {
+    const key = "todo__" + item.id;
+    localStorage.removeItem(key);
   }
 
   render() {
