@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
 }
 
-#root {
+.todo {
   width: 85%;
   margin: auto;
   text-align: center;
@@ -16,7 +16,7 @@ body {
 }
 
 @media (min-width: 700px) {
-  #root {
+  .todo {
     width: 600px;
   }
 }
