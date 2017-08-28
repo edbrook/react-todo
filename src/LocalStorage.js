@@ -28,9 +28,8 @@ export default class LocalStorage {
   }
 
   getItems(filter = () => true) {
-    const keys = Object.keys(localStorage).filter(k => {
-      return filter(k.substr(this.prefix.length));
-    });
+    const keys = Object.keys(localStorage).filter(
+      k => filter(k.substr(this.prefix.length)));
     const items = [];
     for (let key of keys) {
       const item = JSON.parse(localStorage.getItem(key));
